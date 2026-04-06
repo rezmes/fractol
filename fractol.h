@@ -20,9 +20,10 @@
 
 # define WIDTH 800
 # define HEIGHT 800
-# define MAX_ITER 100 // مقدار تکرار را برای جزئیات بیشتر کمی بالا بردیم
+# define MAX_ITER 100
 
-typedef struct s_data {
+typedef struct s_data
+{
 	void	*mlx;
 	void	*win;
 	void	*img;
@@ -40,7 +41,7 @@ typedef struct s_data {
 
 /* Render */
 void	render(t_data *data);
-int     get_color(int iter);
+int		get_color(int iter);
 void	put_pixel(t_data *data, int x, int y, int color);
 
 /* Events */
@@ -49,6 +50,6 @@ int		mouse_hooks(int button, int x, int y, t_data *data);
 int		clean_exit(t_data *data);
 
 /* Utils */
-double	ft_atof(char *s); // اضافه شد
+double	ft_atof(char *s);
 
 #endif

@@ -6,9 +6,11 @@
 /*   By: mmesgari <mmesgari@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:26:59 by mmesgari          #+#    #+#             */
-/*   Updated: 2026/04/05 21:27:03 by mmesgari         ###   ########.fr       */
+/*   Updated: 2026/04/06 15:26:32 by mmesgari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "fractol.h"
 
 #include "fractol.h"
 
@@ -55,7 +57,6 @@ int	mouse_hooks(int button, int x, int y, t_data *data)
 	return (0);
 }
 
-// تابع کمکی برای مقداردهی اولیه به پارامترهای جولیا
 void	init_julia(t_data *data, int ac, char **av)
 {
 	if (ac == 4 && av[1][0] == 'j')
@@ -65,7 +66,7 @@ void	init_julia(t_data *data, int ac, char **av)
 	}
 	else
 	{
-		data->julia_x = -0.744; // یک مقدار پیش‌فرض زیبا
+		data->julia_x = -0.744;
 		data->julia_y = 0.148;
 	}
 }
