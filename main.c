@@ -38,14 +38,36 @@ int	key_hooks(int keycode, t_data *data)
 
 int	mouse_hooks(int button, int x, int y, t_data *data)
 {
-	(void)x;
-	(void)y;
+	double	m_re;
+	double	m_im;
+
+	m_re = (x - WIDTH / 2.0) * (4.0 / (WIDTH * data->zoom)) + data->shift_x;
+	m_im = (y - HEIGHT / 2.0) * (4.0 / (HEIGHT * data->zoom)) + data->shift_y;
 	if (button == 4)
 		data->zoom *= 1.2;
 	else if (button == 5)
 		data->zoom /= 1.2;
+	else
+		return (0);
+	data->shift_x = m_re - (x - WIDTH / 2.0) * (4.0 / (WIDTH * data->zoom));
+	data->shift_y = m_im - (y - HEIGHT / 2.0) * (4.0 / (HEIGHT * data->zoom));
 	render(data);
 	return (0);
+}
+
+// تابع کمکی برای مقداردهی اولیه به پارامترهای جولیا
+void	init_julia(t_data *data, int ac, char **av)
+{
+	if (ac == 4 && av[1][0] == 'j')
+	{
+		data->julia_x = ft_atof(av[2]);
+		data->julia_y = ft_atof(av[3]);
+	}
+	else
+	{
+		data->julia_x = -0.744; // یک مقدار پیش‌فرض زیبا
+		data->julia_y = 0.148;
+	}
 }
 
 int	main(int ac, char **av)
@@ -54,12 +76,12 @@ int	main(int ac, char **av)
 
 	if (ac < 2 || (av[1][0] != 'm' && av[1][0] != 'j'))
 	{
-		write(1, "Usage: ./fractol mandelbrot OR julia\n", 37);
+		write(1, "Usage: ./fractol mandelbrot OR julia <x> <y>\n", 45);
 		return (1);
 	}
 	data.name = av[1];
-	data.julia_x = -0.7;
-	data.julia_y = 0.27;
+	if (data.name[0] == 'j')
+		init_julia(&data, ac, av);
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "fract-ol");
 	data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);

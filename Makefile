@@ -1,5 +1,6 @@
 NAME    = fractol
-SRCS    = main.c render.c
+# اضافه کردن utils.c به لیست SRCS
+SRCS    = main.c render.c utils.c 
 OBJS    = $(SRCS:.c=.o)
 CC      = cc
 CFLAGS  = -Wall -Wextra -Werror -Wno-cast-function-type -std=gnu89
@@ -10,7 +11,6 @@ MLX_FLAGS = $(MLX_LIB) -lXext -lX11 -lm
 
 all: $(NAME)
 
-# علامت - قبل از make یعنی "اگر خطا داد هم ادامه بده"
 $(MLX_LIB):
 	-@make -C $(MLX_PATH) CFLAGS="-O3 -w -std=gnu89"
 
