@@ -3,7 +3,7 @@ NAME		= fractol
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 
-SRCS		= main.c render.c utils.c
+SRCS		= main.c init.c hooks.c render.c fractals.c utils.c
 OBJS		= $(SRCS:.c=.o)
 
 MLX_DIR		= minilibx-linux
@@ -16,8 +16,7 @@ X11_INC		= $(shell for p in /usr/include /usr/include/X11 /usr/X11/include /usr/
 			done)
 
 MLX_LINK	= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd
-
-MLX_COMPAT_CFLAGS = -O3 -w -std=gnu89 -I$(X11_INC)
+MLX_COMPAT	= -O3 -w -std=gnu89 -I$(X11_INC)
 
 all: $(NAME)
 
@@ -30,7 +29,7 @@ $(MLX_LIB):
 		exit 1; \
 	fi
 	@$(MAKE) -C $(MLX_DIR) -f Makefile.mk INC=$(X11_INC) >/dev/null 2>&1 || \
-	$(MAKE) -C $(MLX_DIR) -f Makefile.mk INC=$(X11_INC) CFLAGS="$(MLX_COMPAT_CFLAGS)"
+	$(MAKE) -C $(MLX_DIR) -f Makefile.mk INC=$(X11_INC) CFLAGS="$(MLX_COMPAT)"
 
 %.o: %.c fractol.h
 	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
