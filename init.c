@@ -6,7 +6,7 @@
 /*   By: mmesgari <mmesgari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 16:28:40 by mmesgari          #+#    #+#             */
-/*   Updated: 2026/04/15 16:29:07 by mmesgari         ###   ########.fr       */
+/*   Updated: 2026/04/15 20:35:05 by mmesgari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,20 @@ int	parse_args(t_data *data, int ac, char **av)
 	return (1);
 }
 
+static int	init_error(t_data *data)
+{
+	if (data->img)
+		mlx_destroy_image(data->mlx, data->img);
+	if (data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	if (data->mlx)
+	{
+		mlx_destroy_display(data->mlx);
+		free(data->mlx);
+	}
+	return (0);
+}
+
 int	init_mlx(t_data *data)
 {
 	data->mlx = mlx_init();
@@ -64,10 +78,10 @@ int	init_mlx(t_data *data)
 		return (0);
 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "fract-ol");
 	if (!data->win)
-		return (0);
+		return (init_error(data));
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->img)
-		return (0);
+		return (init_error(data));
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
 			&data->line_length, &data->endian);
 	return (1);
