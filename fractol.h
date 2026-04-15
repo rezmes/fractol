@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmesgari <mmesgari@learner.42.tech>        +#+  +:+       +#+        */
+/*   By: mmesgari <mmesgari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 21:25:11 by mmesgari          #+#    #+#             */
-/*   Updated: 2026/04/05 21:25:15 by mmesgari         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:22:02 by mmesgari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ typedef struct s_data
 	double	shift_y;
 	double	julia_x;
 	double	julia_y;
+	int		color_shift;
 	char	*name;
 }	t_data;
 
 /* Render */
 void	render(t_data *data);
-int		get_color(int iter);
+int		get_color(t_data *data, int iter);
 void	put_pixel(t_data *data, int x, int y, int color);
 
 /* Events */
@@ -51,5 +52,8 @@ int		clean_exit(t_data *data);
 
 /* Utils */
 double	ft_atof(char *s);
+int		ft_strcmp(char *s1, char *s2);
+int		is_valid_number(char *s);
+void	print_usage(void);
 
 #endif

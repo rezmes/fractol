@@ -1,70 +1,199 @@
-*This project has been created as part of the 42 curriculum by mmesgari@student.42.fr.*
+*This project has been created as part of the 42 curriculum by mmesgari.*
 
-# 🌀 fract-ol
+# fract-ol
 
 ## Description
-**fract-ol** is a computer graphics project developed for the 42 curriculum. The primary goal of this project is to create a small 2D fractal renderer using the school's internal graphical library, **MiniLibX**. 
 
-Through this project, we explore the mathematical beauty of complex numbers, the concept of infinite self-similarity, and the technical challenges of low-level graphical optimization in C. The program currently supports the **Mandelbrot** set and dynamically configurable **Julia** sets, featuring infinite mouse-centered zooming and smooth continuous coloring based on iteration counts.
+**fract-ol** is a small interactive fractal exploration program written in C using the **MiniLibX** graphical library.
 
-## Instructions
+The project focuses on rendering mathematical fractals in real time and letting the user explore them through zooming, movement, and color variation. It introduces core ideas in complex numbers, iterative formulas, low-level pixel drawing, event handling, and interactive graphics programming.
 
-### 1. Compilation
-The project comes with a `Makefile`. To compile the project and generate the executable file, simply run:
-```bash
-make
+This implementation includes the mandatory fractals:
+- **Mandelbrot**
+- **Julia**
+
+It also includes bonus features:
+- **Burning Ship** fractal
+- **Mouse-centered zoom**
+- **View movement with arrow keys**
+- **Color range shifting**
+
+---
+
+## Features
+
+### Mandatory part
+- Renders the **Mandelbrot set**
+- Renders the **Julia set**
+- Displays the fractal inside a graphical window
+- Uses a MiniLibX image buffer for drawing
+- Supports smooth window behavior
+- Exits cleanly when pressing **ESC**
+- Exits cleanly when clicking the window close button
+- Accepts command-line parameters to select the fractal
+- Displays a usage message and exits if parameters are invalid
+- Uses multiple colors to represent iteration depth
+
+### Bonus part
+- Adds a third fractal: **Burning Ship**
+- Zoom follows the actual mouse position
+- Arrow keys move the current view
+- Color palette can be shifted interactively
+
+---
+
+## Project structure
+
+Example project layout:
+
+```txt
+.
+├── Makefile
+├── README.md
+├── fractol.h
+├── main.c
+├── render.c
+├── utils.c
+└── minilibx-linux/
 ```
-This will compile the source files and create an executable named fractol at the root of the repository.
+## Compilation
 
-Other available make rules:
+### To compile the project, run:
+```bash
+`make`
+```
+### Useful Makefile rules:
+```bash
+make clean
+make fclean
+make re
+```
+The executable generated is:
 
-make clean: Removes all the object files (.o).
-
-make fclean: Removes the object files and the fractol executable.
-
-make re: Performs a full re-compilation (fclean followed by make).
-
-2. Execution
-Once compiled, you must run the fractol executable with specific parameters. Running it without parameters will display a help menu.
-
-To view the Mandelbrot set:
-
-```Bash
+```bash
+./fractol
+```
+## Usage
+### Mandelbrot
+```bash
 ./fractol mandelbrot
 ```
-(You can also simply use m instead of mandelbrot)
-
-To view the Julia set:
-The Julia set requires you to provide the Real (X) and Imaginary (Y) parts of the constant C to generate its shape.
-
-```Bash
-./fractol julia <X> <Y>
+### Julia
+```bash
+./fractol julia <x> <y>
 ```
-(You can also use j instead of julia)
 
-Beautiful Julia examples to try:
+## Example:
 
-```Bash
+```bash
 ./fractol julia -0.8 0.156
-./fractol julia -0.4 0.6
-./fractol julia 0.285 0.01
 ```
-3. Controls
-Mouse Scroll: Zoom in and out. The zoom is mathematically centered precisely on the location of your mouse cursor.
+### Burning Ship
+```bash
+./fractol burning_ship
+```
+If no valid argument is provided, the program prints a usage message and exits properly.
 
-ESC Key: Safely exit the program.
+## Controls
+* General controls
+* Mouse wheel: zoom in / zoom out
+* ESC: quit the program
+* Window close button: quit the program
+## Bonus controls
+* Left arrow: move left
+* Right arrow: move right
+* Up arrow: move up
+* Down arrow: move down
+* C: shift colors forward
+* X: shift colors backward
+---
+## Technical overview
 
-Window Close (X): Safely exit the program with zero memory leaks.
+Each pixel of the window is mapped to a point in the complex plane.
 
-Resources
-Classic References
-Mandelbrot Set (Wikipedia)
+For each point, the program applies an iterative formula:
 
-Julia Set (Wikipedia)
+* **Mandelbrot** starts from z = 0 and uses the current pixel as the complex constant c
+* **Julia** starts from the current pixel as z and uses the command-line parameters as the constant c
+* **Burning Ship** applies a variation using absolute values before each iteration step
 
-42Docs - MiniLibX Documentation - Essential for understanding event hooks, memory image manipulation, and window management.
+The number of iterations before divergence determines the color of the pixel.
 
-AI Usage Disclosure
-Artificial Intelligence (LLM) was utilized during the development of this project strictly as an educational tutor and cognitive prosthetic, specifically for:
+Rendering is done by writing directly into a MiniLibX image buffer and then pushing that image to the window.
 
-Mathematical Visualization: Breaking down the mapping algorithm between 2D screen coordinates (pixels) and the mathematical Complex Plane.
+## Bonus details
+### Mouse-centered zoom
+
+Zooming is centered on the current mouse position so that the point under the cursor remains visually stable during zoom.
+
+## View movement
+
+The visible region of the complex plane can be translated using the arrow keys.
+
+## Color shifting
+
+The color palette can be adjusted interactively in order to explore different visual ranges without changing the fractal formula itself.
+
+## Error handling
+
+The program handles the following cases safely:
+
+* missing arguments
+* invalid fractal name
+* invalid Julia parameters
+* clean exit on keyboard or window close event
+
+If initialization fails, the program exits without leaving allocated graphical resources behind.
+
+## MiniLibX and dependencies
+
+This project uses the Linux version of **MiniLibX**.
+
+Typical required libraries on Linux include:
+
+* X11
+* Xext
+* math library
+* BSD compatibility library on some systems
+
+Depending on the environment, the following development packages may be needed:
+
+```bash
+libx11-dev
+libxext-dev
+libbsd-dev
+```
+## Resources
+### Fractals
+* Mandelbrot set
+* Julia set
+* Burning Ship fractal
+### Graphics and library
+* MiniLibX documentation
+* X11 documentation
+### Mathematical background
+* Complex numbers
+* Escape-time fractal algorithms
+* Iterative function systems
+
+### AI usage disclosure
+
+Artificial Intelligence was used as a learning and review aid during the development of this project.
+
+It was used for:
+
+* clarifying the mathematical mapping between screen coordinates and the complex plane
+* behavior on different Linux environments
+
+All code integration, debugging decisions, testing, and final validation remained under the author's control.
+
+## Notes
+
+This project was developed as part of the 42 curriculum and aims to balance:
+
+* mathematical correctness
+* interactive behavior
+* clean resource management
+* readable C code under project constraints
+
+The goal is not only to render fractals, but also to build a reliable graphical program using low-level tools and event-driven design.
